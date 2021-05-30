@@ -38,7 +38,7 @@ namespace xkomEventsAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, XkomEventsContext _context)
         {
             if (env.IsDevelopment())
             {
@@ -48,6 +48,11 @@ namespace xkomEventsAPI
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "xkomEventsAPI v1");
                 });
+
+                if (!_context.Database.EnsureCreated())
+                {
+                    _context.Database.Migrate();
+                }
             }
 
             app.UseHttpsRedirection();
